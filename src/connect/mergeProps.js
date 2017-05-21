@@ -1,6 +1,7 @@
 import verifyPlainObject from '../utils/verifyPlainObject'
 
 export function defaultMergeProps(stateProps, dispatchProps, ownProps) {
+  // 把 dispath 和 state 以及传入的 props 组合为一个对象
   return { ...ownProps, ...stateProps, ...dispatchProps }
 }
 

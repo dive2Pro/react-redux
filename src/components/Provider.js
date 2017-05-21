@@ -19,6 +19,7 @@ function warnAboutReceivingStore() {
   )
 }
 
+// 单纯提供 store给子组件
 export function createProvider(storeKey = 'store', subKey) {
     const subscriptionKey = subKey || `${storeKey}Subscription`
 

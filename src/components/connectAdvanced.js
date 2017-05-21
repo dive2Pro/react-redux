@@ -11,6 +11,7 @@ function noop() {}
 function makeSelectorStateful(sourceSelector, store) {
   // wrap the selector in an object that tracks its results between runs.
   const selector = {
+    // props 也就是父组件传入的 props 作为 mapState 或 mapDispath 的 第二个参数
     run: function runComponentSelector(props) {
       try {
         const nextProps = sourceSelector(store.getState(), props)
@@ -87,6 +88,7 @@ export default function connectAdvanced(
   }
 
   return function wrapWithConnect(WrappedComponent) {
+
     invariant(
       typeof WrappedComponent == 'function',
       `You must pass a component to the function returned by ` +
@@ -112,6 +114,7 @@ export default function connectAdvanced(
       WrappedComponent
     }
 
+    // 订阅 store 的事件改变
     class Connect extends Component {
       constructor(props, context) {
         super(props, context)

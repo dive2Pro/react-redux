@@ -36,9 +36,13 @@ export function getDependsOnOwnProps(mapToProps) {
 //    the developer that their mapToProps function is not returning a valid result.
 //    
 export function wrapMapToPropsFunc(mapToProps, methodName) {
+ // 作为返回值 成为 connectAdvanced的第二个参数中的一个属性
+      // connect()(Component) 之后 初始化包裹Component的组件时调用
   return function initProxySelector(dispatch, { displayName }) {
+    // 在@link pureFinalPropsSelector中引用
     const proxy = function mapToPropsProxy(stateOrDispatch, ownProps) {
       return proxy.dependsOnOwnProps
+          // 这里会调用我们自己定义的 mapStateToProps 或者 mapDispatchToProps
         ? proxy.mapToProps(stateOrDispatch, ownProps)
         : proxy.mapToProps(stateOrDispatch)
     }
@@ -47,6 +51,7 @@ export function wrapMapToPropsFunc(mapToProps, methodName) {
     proxy.dependsOnOwnProps = true
 
     proxy.mapToProps = function detectFactoryAndVerify(stateOrDispatch, ownProps) {
+      // 替换!
       proxy.mapToProps = mapToProps
       proxy.dependsOnOwnProps = getDependsOnOwnProps(mapToProps)
       let props = proxy(stateOrDispatch, ownProps)
@@ -59,7 +64,7 @@ export function wrapMapToPropsFunc(mapToProps, methodName) {
 
       if (process.env.NODE_ENV !== 'production') 
         verifyPlainObject(props, displayName, methodName)
-
+        // 返回操作过的props数据对象
       return props
     }
 
